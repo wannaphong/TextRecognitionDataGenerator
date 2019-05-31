@@ -18,8 +18,8 @@ def _generate_horizontal_text(text, font, text_color, font_size, space_width, fi
     words_width = [image_font.getsize(w)[0] for w in words]
     text_width =  sum(words_width) + int(space_width) * (len(words) - 1)
     text_height = max([image_font.getsize(w)[1] for w in words])
-
-    txt_img = Image.new('RGBA', (text_width, text_height), (0, 0, 0, 0))
+    
+    txt_img = Image.new('RGBA', (text_width, text_height), (0,0,0,0))
 
     txt_draw = ImageDraw.Draw(txt_img)
 
@@ -48,9 +48,9 @@ def _generate_vertical_text(text, font, text_color, font_size, space_width, fit)
     char_heights = [image_font.getsize(c)[1] if c != ' ' else space_height for c in text]
     text_width = max([image_font.getsize(c)[0] for c in text])
     text_height = sum(char_heights)
-
-    txt_img = Image.new('RGBA', (text_width, text_height), (0, 0, 0, 0))
-
+    
+    txt_img = Image.new('RGBA', (text_width, text_height), (0,0,0,0))
+    
     txt_draw = ImageDraw.Draw(txt_img)
 
     colors = [ImageColor.getrgb(c) for c in text_color.split(',')]

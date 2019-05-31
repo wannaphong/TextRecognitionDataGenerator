@@ -22,13 +22,13 @@ class FakeTextDataGenerator(object):
         cls.generate(*t)
 
     @classmethod
-    def generate(cls, index, text, font, out_dir, size, extension, skewing_angle, random_skew, blur, random_blur, background_type, distorsion_type, distorsion_orientation, is_handwritten, name_format, width, alignment, text_color, orientation, space_width, margins, fit):
+    def generate(cls, index, text, font, out_dir, size, extension, skewing_angle, random_skew, blur, random_blur, background_type, distorsion_type, distorsion_orientation, is_handwritten, name_format, width, alignment, text_color, orientation, space_width, margins, fit,bg_color,font_size):
         image = None
 
         margin_top, margin_left, margin_bottom, margin_right = margins
         horizontal_margin = margin_left + margin_right
         vertical_margin = margin_top + margin_bottom
-
+        
         ##########################
         # Create picture of text #
         ##########################
@@ -60,7 +60,7 @@ class FakeTextDataGenerator(object):
                 vertical=(distorsion_orientation == 0 or distorsion_orientation == 2),
                 horizontal=(distorsion_orientation == 1 or distorsion_orientation == 2)
             )
-        else:
+        elif distorsion_type == 3:
             distorted_img = distorsion_generator.random(
                 rotated_img,
                 vertical=(distorsion_orientation == 0 or distorsion_orientation == 2),
@@ -85,24 +85,36 @@ class FakeTextDataGenerator(object):
             background_height = new_height + vertical_margin
         else:
             raise ValueError("Invalid orientation")
-
+            
+        h = (resized_img.size[0]/100)*font_size
+        w = (resized_img.size[1]/100)*font_size
+        
+        h = int(h)
+        w = int(w)
+        
+        resized_img = resized_img.resize((h,w))
         #############################
         # Generate background image #
         #############################
+        
         if background_type == 0:
             background = background_generator.gaussian_noise(background_height, background_width)
         elif background_type == 1:
             background = background_generator.plain_white(background_height, background_width)
         elif background_type == 2:
             background = background_generator.quasicrystal(background_height, background_width)
-        else:
+        elif background_type == 3:
             background = background_generator.picture(background_height, background_width)
+        elif background_type == 4:
+            background = background_generator.color(background_height, background_width,bg_color)
 
         #############################
         # Place text with alignment #
         #############################
 
         new_text_width, _ = resized_img.size
+        
+        print(alignment)
 
         if alignment == 0 or width == -1:
             background.paste(resized_img, (margin_left, margin_top), resized_img)
@@ -118,6 +130,11 @@ class FakeTextDataGenerator(object):
         final_image = background.filter(
             ImageFilter.GaussianBlur(
                 radius=(blur if not random_blur else random.randint(0, blur))
+                
+#                 if !random_blur 
+#                    radius = blur
+#                 else 
+#                    radius = random.randint(0, blur))
             )
         )
 
@@ -128,7 +145,7 @@ class FakeTextDataGenerator(object):
             image_name = '{}_{}.{}'.format(text, str(index), extension)
         elif name_format == 1:
             image_name = '{}_{}.{}'.format(str(index), text, extension)
-        elif name_format == 2:
+        elif name_format == 2 or name_format == 3:
             image_name = '{}.{}'.format(str(index),extension)
         else:
             print('{} is not a valid name format. Using default.'.format(name_format))
