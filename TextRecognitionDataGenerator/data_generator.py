@@ -114,12 +114,10 @@ class FakeTextDataGenerator(object):
 
         new_text_width, _ = resized_img.size
         
-        print(alignment)
-
         if alignment == 0 or width == -1:
             background.paste(resized_img, (margin_left, margin_top), resized_img)
         elif alignment == 1:
-            background.paste(resized_img, (int(background_width / 2 - new_text_width / 2), margin_top), resized_img)
+            background.paste(resized_img, (int(background_width / 2 - new_text_width / 2)+5, margin_top), resized_img)
         else:
             background.paste(resized_img, (background_width - new_text_width - margin_right, margin_top), resized_img)
 
