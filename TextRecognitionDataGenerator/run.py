@@ -58,7 +58,7 @@ def parse_arguments():
         type=int,
         nargs="?",
         help="The number of images to be created.",
-        default=1000
+        default=10
     )
     parser.add_argument(
         "-rs",
@@ -247,14 +247,14 @@ def parse_arguments():
         type=margins,
         nargs="?",
         help="Define the margins around the text when rendered. In pixels",
-        default=(5, 5, 5, 5)
+        default=(10, 10, 10, 10)
     )
     parser.add_argument(
         "-fi",
         "--fit",
         action="store_true",
         help="Apply a tight crop around the rendered text",
-        default=False
+        default=True
     )
     parser.add_argument(
         "-ft",
@@ -313,16 +313,19 @@ def load_fonts(lang):
     else:
         return [os.path.join('fonts/latin', font) for font in os.listdir('fonts/latin')]
 
-colorList =[(255,0,0,1),
-           (0,255,0,1),
-           (0,0,255,1),
-           (255,255,0,1),
-           (0,255,255,1),
-           (255,0,255,1),
-           (255,255,255,1),
-           (0,0,0,1)]
+# colorList =[(255,0,0,1),
+#            (0,255,0,1),
+#            (0,0,255,1),
+#            (255,255,0,1),
+#            (0,255,255,1),
+#            (255,0,255,1),
+#            (255,255,255,1),
+#            (0,0,0,1)]
 
-percentRatioList = [10,20,30,40,50,60,70,80,90,100]
+colorList =[(0,0,0,1)]
+
+# percentRatioList = [10,20,30,40,50,60,70,80,90,100]
+percentRatioList = [100]
 
 # Random text color in list
 from colormap import rgb2hex
@@ -359,13 +362,13 @@ def RandomTextColor(count: int):
 
 # Random background color in list
 def RandomBackgroundColorInList(count: int)-> list:
-    colorList = []
+    colorList1 = []
     for i in range(count):
-        rnd = random.randint(0,len(colorList)-1)
+        rnd = random.randint(0, len(colorList)-1)
         color = colorList[rnd]
-        colorList.append(color)
+        colorList1.append(color)
         
-    return colorList
+    return colorList1
 
 # Random background color
 def RandomBackgroundColor(count: int)-> list:
@@ -381,6 +384,12 @@ def CreateReport(dataframe):
     df = pd.DataFrame(dataframe,columns=['File name','Text','Font','Font size ratio','Font color','Background','Image size','Distorsion','Blur','Skew'])
     df.to_csv('out/Report.csv',index = False)
     print("Report.csv is written")
+
+def GenerateWhiteList(count: int):
+    x = []
+    for i in range(count):
+        x.append('#ffffff')
+    return x
 
 def main():
     """
@@ -428,6 +437,8 @@ def main():
     else:
         strings = create_strings_from_dict(args.length, args.random, args.count, lang_dict)
 
+    # print(strings)
+    strings = ["หิวน้ำเดี๋ยวพรุ่งนี้เค้าก็กลับมา ไม้โท เสี่ยว", "อร่อยมากเลย"]
     string_count = len(strings)
     
     # Random BG color
@@ -443,7 +454,7 @@ def main():
         
         for i in range(args.count):
             if args.background_color_mode == "rndInList":
-                colorBGList =  RandomBackgroundColorInList(args.count)
+                colorBGList =  GenerateWhiteList(args.count)
                 backgroundList.append(4)
             elif args.background_color_mode == "rnd":
                 colorBGList =  RandomBackgroundColor(args.count)
@@ -467,7 +478,7 @@ def main():
                 rndBackground = random.randint(0,3)
                 colorBGList.append(rndBackground)
                 backgroundList.append(rndBackground)
-    
+    # print(colorBGList)
     # Random text color
     if args.text_color == 'rndInList':
         colorTextList =  RandomTextColorInList(args.count)
@@ -482,7 +493,8 @@ def main():
     fontList = []
     for i in range(args.count):
         fontList.append( fonts[random.randrange(0, len(fonts)-1)])
-        
+    # print(fontList)
+    # fontList = ['fonts/tha/Niramit-ExtraLight.ttf', 'fonts/tha/Niramit-ExtraLight.ttf']
     # Distorsion list
     distorsionList = []
     if args.distorsion == 3:
@@ -566,7 +578,6 @@ def main():
             im = Image.open(args.output_dir+str(i)+'.jpg')
             fontName = fontList[i]
             
-            
             if colorBGList[i] == 0:
                 colorBGList[i] = "gaussian noise"
             elif colorBGList[i] == 1:
@@ -577,7 +588,7 @@ def main():
                 colorBGList[i] = "picture"
             elif type(colorBGList[i]) == type((0,0,0,0)):
                 colorBGList[i] = "color background " + str(colorBGList[i]) 
-                
+
             if distorsionList[i] == 0:
                 distorsionList[i] = "None (Default)"
             elif distorsionList[i] == 1:
@@ -588,7 +599,7 @@ def main():
             tupleData = (i,strings[i],fontName[10:],str(ratioList[i])+"%",colorTextList[i],colorBGList[i],im.size,distorsionList[i],blurList[i],skewList[i])
             
             dataframe.append(tupleData)
-            print(tupleData)
+            # print(tupleData)
             
         CreateReport(dataframe)
         

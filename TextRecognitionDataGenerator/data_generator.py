@@ -6,6 +6,7 @@ from PIL import Image, ImageFilter
 import computer_text_generator
 import background_generator
 import distorsion_generator
+import handwritten_text_generator
 try:
     import handwritten_text_generator
 except ImportError as e:
@@ -38,7 +39,7 @@ class FakeTextDataGenerator(object):
             image = handwritten_text_generator.generate(text, text_color, fit)
         else:
             image = computer_text_generator.generate(text, font, text_color, size, orientation, space_width, fit)
-
+        # image.show()
         random_angle = random.randint(0-skewing_angle, skewing_angle)
 
         rotated_img = image.rotate(skewing_angle if not random_skew else random_angle, expand=1)
@@ -150,4 +151,7 @@ class FakeTextDataGenerator(object):
             image_name = '{}_{}.{}'.format(text, str(index), extension)
 
         # Save the image
+        
+        size_set = random.randint(100, 500) 
+        final_image.thumbnail((size_set, size_set))
         final_image.convert('RGB').save(os.path.join(out_dir, image_name))
