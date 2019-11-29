@@ -313,16 +313,16 @@ def load_fonts(lang):
     else:
         return [os.path.join('fonts/latin', font) for font in os.listdir('fonts/latin')]
 
-# colorList =[(255,0,0,1),
-#            (0,255,0,1),
-#            (0,0,255,1),
-#            (255,255,0,1),
-#            (0,255,255,1),
-#            (255,0,255,1),
-#            (255,255,255,1),
-#            (0,0,0,1)]
+colorList =[(255,0,0,1),
+           (0,255,0,1),
+           (0,0,255,1),
+           (255,255,0,1),
+           (0,255,255,1),
+           (255,0,255,1),
+           (255,255,255,1),
+           (0,0,0,1)]
 
-colorList =[(0,0,0,1)]
+# colorList =[(0,0,0,1)]
 
 # percentRatioList = [10,20,30,40,50,60,70,80,90,100]
 percentRatioList = [100]
@@ -438,7 +438,7 @@ def main():
         strings = create_strings_from_dict(args.length, args.random, args.count, lang_dict)
 
     # print(strings)
-    strings = ["หิวน้ำเดี๋ยวพรุ่งนี้เค้าก็กลับมา ไม้โท เสี่ยว", "อร่อยมากเลย"]
+    # strings = ["หิวน้ำเดี๋ยวพรุ่งนี้เค้าก็กลับมา ไม้โท เสี่ยว", "อร่อยมากเลย"]
     string_count = len(strings)
     
     # Random BG color
@@ -453,12 +453,14 @@ def main():
     elif args.background == 4:
         
         for i in range(args.count):
-            if args.background_color_mode == "rndInList":
-                colorBGList =  GenerateWhiteList(args.count)
-                backgroundList.append(4)
-            elif args.background_color_mode == "rnd":
-                colorBGList =  RandomBackgroundColor(args.count)
-                backgroundList.append(4)
+            colorBGList.append((random.randint(0,255),random.randint(0,255),random.randint(0,255),1))
+            backgroundList.append(4)
+            # if args.background_color_mode == "rndInList":
+            #     colorBGList =  GenerateWhiteList(args.count)
+            #     backgroundList.append(4)
+            # elif args.background_color_mode == "rnd":
+            #     colorBGList =  RandomBackgroundColor(args.count)
+            #     backgroundList.append(4)
             
     elif args.background == 5:
         
