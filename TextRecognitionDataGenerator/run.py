@@ -6,6 +6,7 @@ import sys
 import random
 import shutil
 import pandas as pd
+import time
 
 from tqdm import tqdm
 from string_generator import (

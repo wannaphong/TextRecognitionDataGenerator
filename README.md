@@ -5,6 +5,7 @@ A synthetic data generator for text recognition.
 A fork from https://github.com/Belval/TextRecognitionDataGenerator - with addtional Thai script support.
 
 ## What is it for?
+
 Generating text image samples to train an OCR software. Now supporting non-latin text! For a more thorough tutorial see [the official documentation](https://textrecognitiondatagenerator.readthedocs.io/en/latest/index.html).
 
 ## What do I need to make it work?
@@ -24,6 +25,7 @@ tqdm
 You can simply use `pip install -r requirements.txt` too.
 
 ## New
+
 - Add `--font` to use only one font for all the generated images (Thank you @JulienCoutault!)
 - Add `--fit` and `--margins` for finer layout control
 - Change the text orientation using the `-or` parameter
@@ -100,7 +102,7 @@ It uses a Tensorflow model trained using [this excellent project](https://github
 
 ### Dictionary
 
-The text is chosen at random in a dictionary file (that can be found in the *dicts* folder) and drawn on a white background made with Gaussian noise. The resulting image is saved as [text]\_[index].jpg
+The text is chosen at random in a dictionary file (that can be found in the _dicts_ folder) and drawn on a white background made with Gaussian noise. The resulting image is saved as [text]\_[index].jpg
 
 There are a lot of parameters that you can tune to get the results you want, therefore I recommand checking out `python run.py -h` for more informations.
 
@@ -122,13 +124,13 @@ Simplified:
 
 ## Add fonts
 
-Yes, the script picks a font at random from the *fonts* directory.
+Yes, the script picks a font at random from the _fonts_ directory.
 
-|||
-|:----|:-----|
+|             |                                  |
+| :---------- | :------------------------------- |
 | fonts/latin | English, French, Spanish, German |
-| fonts/cn | Chinese |
-|||
+| fonts/cn    | Chinese                          |
+|             |                                  |
 
 Simply add / remove fonts until you get the desired output.
 
@@ -145,15 +147,15 @@ It only supports .ttf for now.
 ## Benchmarks
 
 - Intel Core i7-4710HQ @ 2.50Ghz + SSD (-c 1000 -w 1)
-    - `-t 1` : 363 img/s
-    - `-t 2` : 694 img/s
-    - `-t 4` : 1300 img/s
-    - `-t 8` : 1500 img/s
+  - `-t 1` : 363 img/s
+  - `-t 2` : 694 img/s
+  - `-t 4` : 1300 img/s
+  - `-t 8` : 1500 img/s
 - AMD Ryzen 7 1700 @ 4.0Ghz + SSD (-c 1000 -w 1)
-    - `-t 1` : 558 img/s
-    - `-t 2` : 1045 img/s
-    - `-t 4` : 2107 img/s
-    - `-t 8` : 3297 img/s
+  - `-t 1` : 558 img/s
+  - `-t 2` : 1045 img/s
+  - `-t 4` : 2107 img/s
+  - `-t 8` : 3297 img/s
 
 ## Contributing
 
@@ -166,6 +168,7 @@ It only supports .ttf for now.
 If anything is missing, unclear, or simply not working, open an issue on the repository.
 
 ## What is left to do?
+
 - Better background generation
 - Better handwritten text generation
 - More customization parameters (mostly regarding background)
@@ -174,10 +177,18 @@ If anything is missing, unclear, or simply not working, open an issue on the rep
 
 - -b 4 use color background ใช้พื้นหลังสี
 - -b 5 random (0-4) สุ่ม (0-4) (0: Gaussian Noise, 1: Plain white, 2: Quasicrystal, 3: Pictures, 4: Random color)
-- -bm rndInList random color in colorList สุ่มสีอักษรในรายการ //rnd: Random RGB 0 to 255, rndInList: 
-- -bm rnd สุ่มสีอักษร RGB (0 ถึง 255) *เมื่อใช้ Background color ควรใช้ -bm
-- -tc rndInList สุ่มสีอักษรใน list //rnd: Random RGB 0 to 255, rndInList: random color in colorList 
+- -bm rndInList random color in colorList สุ่มสีอักษรในรายการ //rnd: Random RGB 0 to 255, rndInList:
+- -bm rnd สุ่มสีอักษร RGB (0 ถึง 255) \*เมื่อใช้ Background color ควรใช้ -bm
+- -tc rndInList สุ่มสีอักษรใน list //rnd: Random RGB 0 to 255, rndInList: random color in colorList
 - -tc rnd คือ Random สีอักษร RGB (0 ถึง 255)
 - -na 3 คือ โหมดตั้งชื่อไฟล์เป็นเลข และเขียนไฟล์ Report.csv ให้แสดงรายละเอียดแต่ละภาพ
 - -d 3 random distorsion (0-3) (0: None (Default), 1: Sine wave, 2: Cosine wave)
 - -rbs Ture สุ่ม random_blur และ random_skew
+
+## Run docker
+
+```
+docker-compose up --build
+```
+
+Result will be in ./result

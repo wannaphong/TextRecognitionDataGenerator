@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  textgen:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./TextRecognitionDataGenerator:/usr/src/app
+    command:
+      [
+        "python3",
+        "./run.py",
+        "-l",
+        "th",
+        "-b",
+        "5",
+        "-bcm",
+        "rndInList",
+        "-tc",
+        "rndInList",
+        "-rfs",
+        "False",
+        "-d",
+        "3",
+        "-rbs",
+        "True",
+        "-na",
+        "3",
+        "-c",
+        "10",
+        "-f",
+        "200",
+      ]
