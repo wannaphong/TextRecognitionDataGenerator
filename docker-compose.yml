@@ -25,9 +25,11 @@ services:
         "-rbs",
         "True",
         "-na",
-        "3",
+        "4",
         "-c",
         "10",
         "-f",
         "200",
+        "-i",
+        "dicts/th.txt",
       ]

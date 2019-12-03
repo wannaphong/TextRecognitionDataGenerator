@@ -183,7 +183,7 @@ def parse_arguments():
         "-na",
         "--name_format",
         type=int,
-        help="Define how the produced files will be named. 0: [TEXT]_[ID].[EXT], 1: [ID]_[TEXT].[EXT] 2: [ID].[EXT] + one file labels.txt containing id-to-label mappings, 3: [ID].[EXT] + Report file .csv",
+        help="Define how the produced files will be named. 0: [TEXT]_[ID].[EXT], 1: [ID]_[TEXT].[EXT] 2: [ID].[EXT] + one file labels.txt containing id-to-label mappings, 3: [ID].[EXT] + Report file .csv, 4: [ID].[EXT] + gt.txt",
         default=0,
     )
     parser.add_argument(
@@ -385,6 +385,17 @@ def CreateReport(dataframe):
     df = pd.DataFrame(dataframe,columns=['File name','Text','Font','Font size ratio','Font color','Background','Image size','Distorsion','Blur','Skew'])
     df.to_csv('out/Report.csv',index = False)
     print("Report.csv is written")
+
+# Create train .txt for benchmark with this repo https://github.com/clovaai/deep-text-recognition-benchmark
+def CreateTrainTxt(dataframe):
+    text_file = open("gt.txt", "w")
+    df = pd.DataFrame(dataframe, columns=['File name', 'Text'])
+    for _, row in df.iterrows():
+        file_name = row['File name']
+        text = row['Text']
+        text_file.write(file_name + '\t' + text + '\n')
+    text_file.close()
+    print("Text file is written")
 
 def GenerateWhiteList(count: int):
     x = []
@@ -605,6 +616,16 @@ def main():
             # print(tupleData)
             
         CreateReport(dataframe)
+
+    elif args.name_format == 4:
+        dataframe = []
+        for i in range(args.count):
+            file_name = args.output_dir+str(i)+'.jpg'
+
+            tupleData = (file_name, strings[i])
+
+            dataframe.append(tupleData)
+        CreateTrainTxt(dataframe)
         
 
 if __name__ == '__main__':
