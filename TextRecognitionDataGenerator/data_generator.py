@@ -152,6 +152,6 @@ class FakeTextDataGenerator(object):
 
         # Save the image
         
-        size_set = random.randint(100, 500) 
-        final_image.thumbnail((size_set, size_set))
+        size_set_height = random.randint(25, 100) 
+        final_image.thumbnail((1000000, size_set_height))
         final_image.convert('RGB').save(os.path.join(out_dir, image_name))
